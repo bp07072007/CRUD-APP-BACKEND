@@ -49,52 +49,7 @@ export default class {
     }
   }
 
-  // Add contact information entry
-
-  static async AddContact(req, res) {
-    try {
-      // validate the input fields, we can use middleware validators, as of now doing validation here.
-      if (req.body && !req.body.name) {
-        return res.status(httpStatus.BAD_REQUEST).json({
-          status: "Error",
-          message: ERR_CODES.name.message,
-        });
-      }
-      if (req.body && !req.body.email) {
-        return res.status(httpStatus.BAD_REQUEST).json({
-          status: "Error",
-          message: ERR_CODES.email.message,
-        });
-      }
-      if (req.body && !req.body.contact) {
-        return res.status(httpStatus.BAD_REQUEST).json({
-          status: "Error",
-          message: ERR_CODES.contact.message,
-        });
-      }
-
-      //capture the field data came from the user side.
-      const params = {
-        name: req.body.name,
-        email: req.body.email,
-        contact: req.body.contact,
-        status: 0, //default value is 0
-      };
-
-      //call the add contact service to add the data in database
-      const entry = await ContactService.AddContact(params);
-      return res.status(httpStatus.CREATED).json({
-        status: "success",
-        message: " successfully addded entry",
-        data: entry,
-      });
-    } catch (error) {
-      return res.status(httpStatus[500]).json({
-        status: "Error",
-        message: ERR_CODES[500].message,
-      });
-    }
-  }
+  
 
   // Update contact information into the database
 
@@ -141,6 +96,53 @@ export default class {
       return res.status(httpStatus.CREATED).json({
         status: "success",
         message: " successfully updated",
+        data: entry,
+      });
+    } catch (error) {
+      return res.status(httpStatus[500]).json({
+        status: "Error",
+        message: ERR_CODES[500].message,
+      });
+    }
+  }
+
+  // Add contact information entry
+
+  static async AddContact(req, res) {
+    try {
+      // validate the input fields, we can use middleware validators, as of now doing validation here.
+      if (req.body && !req.body.name) {
+        return res.status(httpStatus.BAD_REQUEST).json({
+          status: "Error",
+          message: ERR_CODES.name.message,
+        });
+      }
+      if (req.body && !req.body.email) {
+        return res.status(httpStatus.BAD_REQUEST).json({
+          status: "Error",
+          message: ERR_CODES.email.message,
+        });
+      }
+      if (req.body && !req.body.contact) {
+        return res.status(httpStatus.BAD_REQUEST).json({
+          status: "Error",
+          message: ERR_CODES.contact.message,
+        });
+      }
+
+      //capture the field data came from the user side.
+      const params = {
+        name: req.body.name,
+        email: req.body.email,
+        contact: req.body.contact,
+        status: 0, //default value is 0
+      };
+
+      //call the add contact service to add the data in database
+      const entry = await ContactService.AddContact(params);
+      return res.status(httpStatus.CREATED).json({
+        status: "success",
+        message: " successfully addded entry",
         data: entry,
       });
     } catch (error) {
