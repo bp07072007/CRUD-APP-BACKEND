@@ -218,4 +218,33 @@ export default class {
       });
     }
   }
+
+  // View particular contact detail
+
+  static async ViewContact(req, res) {
+    try {
+      const id = req.params["id"];
+
+      // validate the input fields validation here.
+      if (!id) {
+        return res.status(httpStatus.BAD_REQUEST).json({
+          status: "Error",
+          message: ERR_CODES.id_not_found.message,
+        });
+      }
+      //call the contact to get particular detail.
+      const entry = await ContactService.ViewContact(id);
+
+      return res.status(httpStatus.OK).json({
+        status: "success",
+        message: "fetched data ",
+        data: entry,
+      });
+    } catch (error) {
+      return res.status(httpStatus[500]).json({
+        status: "Error",
+        message: ERR_CODES[500].message,
+      });
+    }
+  }
 }
