@@ -152,4 +152,36 @@ export default class {
       });
     }
   }
+
+  // Delete contact information from database
+
+  static async DeleteContact(req, res) {
+    try {
+      // validate the input fields, we can use middleware validators, as of now doing validation here.
+      const id = req.params["id"];
+      if (!id) {
+        return res.status(httpStatus.BAD_REQUEST).json({
+          status: "Error",
+          message: ERR_CODES.id_not_found.message,
+        });
+      }
+      //capture the id from URL.
+      const params = {
+        id: req.params["id"],
+      };
+
+      //call the delete contact service to delete the data from database
+      const entry = await ContactService.DeleteContact(params);
+      return res.status(httpStatus.CREATED).json({
+        status: "success",
+        message: " successfully Deleted",
+        data: entry,
+      });
+    } catch (error) {
+      return res.status(httpStatus[500]).json({
+        status: "Error",
+        message: ERR_CODES[500].message,
+      });
+    }
+  }
 }
