@@ -30,11 +30,11 @@ export default class ContactService {
         }
       );
     } catch (error) {
-      const err = {
+      return {
         status: httpStatus.INTERNAL_SERVER_ERROR,
         message: ERR_CODES[500].message,
       };
-      throw err;
+     
     }
   }
 
@@ -55,11 +55,11 @@ export default class ContactService {
         }
       );
     } catch (error) {
-      const err = {
+      return {
         status: httpStatus.INTERNAL_SERVER_ERROR,
         message: ERR_CODES[500].message,
       };
-      throw err;
+     
     }
   }
 
@@ -94,11 +94,11 @@ export default class ContactService {
         return rows;
       });
     } catch (error) {
-      const err = {
+      return {
         status: httpStatus.INTERNAL_SERVER_ERROR,
         message: ERR_CODES[500].message,
       };
-      throw err;
+     
     }
   }
 
@@ -114,12 +114,31 @@ export default class ContactService {
         return rows;
       });
     } catch (error) {
-      const err = {
+      return {
         status: httpStatus.INTERNAL_SERVER_ERROR,
         message: ERR_CODES[500].message,
       };
-      throw err;
+     
     }
   }
-  
+
+  // View single contact detail
+
+  static async ViewContact(id) {
+    return new Promise(function (resolve, reject) {
+      // MySQL query to get the information
+      conn.query(
+        "SELECT * FROM contact_db where id=?",
+        id,
+        function (err, rows) {
+          if (rows === undefined) {
+            reject(new Error("Error rows is undefined"));
+          } else {
+            resolve(rows);
+          }
+        }
+      );
+    });
+  }
+
 }
