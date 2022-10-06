@@ -184,4 +184,38 @@ export default class {
       });
     }
   }
+
+  // Change status contact information and updated into database
+
+  static async ChangeStatusContact(req, res) {
+    try {
+      // validate the input fields, we can use middleware validators, as of now doing validation here.
+      const id = req.params["id"];
+      if (!id) {
+        return res.status(httpStatus.BAD_REQUEST).json({
+          status: "Error",
+          message: ERR_CODES.id_not_found.message,
+        });
+      }
+
+      //capture the id from URL.
+      const params = {
+        status: req.body.status,
+        id: req.params["id"],
+      };
+
+      //call the change status contact service to change the status of the contact in database
+      const entry = await ContactService.ChangeStatusContact(params);
+      return res.status(httpStatus.CREATED).json({
+        status: "success",
+        message: " successfully change the status",
+        data: entry,
+      });
+    } catch (error) {
+      return res.status(httpStatus[500]).json({
+        status: "Error",
+        message: ERR_CODES[500].message,
+      });
+    }
+  }
 }

@@ -101,4 +101,25 @@ export default class ContactService {
       throw err;
     }
   }
+
+  // Change status of the contact detail
+
+  static async ChangeStatusContact(params) {
+    try {
+      //update the  information into database.
+      const query = "UPDATE  contact_db set status=? where id=?";
+      conn.query(query, [params.status, params.id], (err, rows) => {
+        if (err) throw err;
+
+        return rows;
+      });
+    } catch (error) {
+      const err = {
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+        message: ERR_CODES[500].message,
+      };
+      throw err;
+    }
+  }
+  
 }
