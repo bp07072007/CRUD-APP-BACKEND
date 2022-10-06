@@ -81,4 +81,24 @@ export default class ContactService {
       );
     });
   }
+
+  // Delete the contact detail
+
+  static async DeleteContact(params) {
+    try {
+      //update the  information into database.
+      const query = "DELETE from  contact_db where id=?";
+      conn.query(query, [params.id], (err, rows) => {
+        if (err) throw err;
+
+        return rows;
+      });
+    } catch (error) {
+      const err = {
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+        message: ERR_CODES[500].message,
+      };
+      throw err;
+    }
+  }
 }
